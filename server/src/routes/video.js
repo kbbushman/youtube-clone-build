@@ -1,12 +1,32 @@
 import express from "express";
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 function getVideoRoutes() {
   const router = express.Router();
 
+  router.get('/', getRecommendedVideos);
+
   return router;
 }
 
-async function getRecommendedVideos(req, res) {}
+async function getRecommendedVideos(req, res) {
+  let videos = await prisma.video.findMany({
+    include: {
+      user: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  if (!videos.length) {
+    return res.status(200).json({ videos });
+  }
+
+  res.status(200).json({ videos });
+}
 
 async function getTrendingVideos(req, res) {}
 
