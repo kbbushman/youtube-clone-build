@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient, prismaVersion } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { protect, getAuthUser } from '../middleware/authorization';
 
 const prisma = new PrismaClient();
@@ -12,7 +12,7 @@ function getVideoRoutes() {
 
   router.get('/trending', getTrendingVideos);
   router.get('/search', searchVideos);
-  
+
   router.get('/:videoId', getAuthUser, getVideo);
   router.delete('/:videoId', protect, deleteVideo);
 
@@ -25,7 +25,7 @@ function getVideoRoutes() {
   return router;
 }
 
-async function getVideoViews(videos) {
+export async function getVideoViews(videos) {
   for (const video of videos) {
     const views = await prisma.view.count({
       where: {
