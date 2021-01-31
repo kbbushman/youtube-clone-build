@@ -8,12 +8,14 @@ function getVideoRoutes() {
   const router = express.Router();
 
   router.get('/', getRecommendedVideos);
+  router.post('/', protect, addVideo);
+
   router.get('/trending', getTrendingVideos);
   router.get('/search', searchVideos);
+  
   router.get('/:videoId', getAuthUser, getVideo);
   router.delete('/:videoId', protect, deleteVideo);
 
-  router.post('/', protect, addVideo);
   router.get('/:videoId/view', getAuthUser, addVideoView);
   router.get('/:videoId/like', protect, likeVideo);
   router.get('/:videoId/dislike', protect, dislikeVideo);
