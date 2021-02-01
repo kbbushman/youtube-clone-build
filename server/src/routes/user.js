@@ -9,12 +9,14 @@ function getUserRoutes() {
   const router = express.Router();
   
   router.get('/', protect, getRecommendedChannels);
+
   router.get('/liked-videos', protect, getLikedVideos);
   router.get('/history', protect, getHistory);
-  router.get('/:userId', getAuthUser, getProfile);
-  router.get('/:userId/toggle-subscribe', protect, toggleSubscribe);
   router.get('/subscriptions', protect, getFeed);
   router.get('/search', getAuthUser, searchUser);
+
+  router.get('/:userId', getAuthUser, getProfile);
+  router.get('/:userId/toggle-subscribe', protect, toggleSubscribe);
 
   return router;
 }
