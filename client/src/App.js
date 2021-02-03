@@ -17,11 +17,13 @@ import LikedVideos from "pages/LikedVideos";
 import NotFound from "pages/NotFound";
 
 function App() {
-  const[isSidebarOpen, setSidebarOpen] = React.useState(true);
+  const[isSidebarOpen, setSidebarOpen] = React.useState(false);
+
+  const toggleSidebarOpen = () => setSidebarOpen(!isSidebarOpen);
 
   return (
     <>
-      <Navbar />
+      <Navbar toggleSidebarOpen={toggleSidebarOpen} />
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <MobileNavbar />
       <Container>
