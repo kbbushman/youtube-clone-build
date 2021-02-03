@@ -5,11 +5,12 @@ import GoogleAuth from "./GoogleAuth";
 import { AppsIcon, HamburgerIcon, LogoIcon, SettingsIcon } from "./Icons";
 import Search from "./Search";
 
-function Navbar() {
+function Navbar({ toggleSidebarOpen }) {
   return (
     <Wrapper>
       <div className="logo flex-row">
-        <HamburgerIcon className="toggle-navhandler" />
+        <HamburgerIcon onClick={toggleSidebarOpen}
+       className="toggle-navhandler" />
         <span>
           <NavLink to='/'>
             <LogoIcon
