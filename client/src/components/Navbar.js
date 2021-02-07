@@ -1,18 +1,24 @@
+import { useAuth } from "context/auth-context";
 import React from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import Wrapper from "../styles/Navbar";
 import GoogleAuth from "./GoogleAuth";
 import { AppsIcon, HamburgerIcon, LogoIcon, SettingsIcon } from "./Icons";
 import Search from "./Search";
+import UserDropdown from "./UserDropdown";
 
 function Navbar({ toggleSidebarOpen }) {
+  const user = useAuth();
+
   return (
     <Wrapper>
       <div className="logo flex-row">
-        <HamburgerIcon onClick={toggleSidebarOpen}
-       className="toggle-navhandler" />
+        <HamburgerIcon
+          onClick={toggleSidebarOpen}
+          className="toggle-navhandler"
+        />
         <span>
-          <NavLink to='/'>
+          <NavLink to="/">
             <LogoIcon
               style={{
                 width: 80,
@@ -32,10 +38,7 @@ function Navbar({ toggleSidebarOpen }) {
         <li>
           <SettingsIcon />
         </li>
-        <li>
-          {" "}
-          <GoogleAuth />
-        </li>
+        <li> {user ? <UserDropdown user={user} /> : <GoogleAuth />}</li>
       </ul>
     </Wrapper>
   );
