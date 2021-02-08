@@ -1,16 +1,29 @@
 // @ts-nocheck
 import React from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import ChannelSkeleton from "../skeletons/WatchVideoSkeleton";
+import { client } from "utils/api-client";
 import CommentList from "../components/AddComment";
 import { DislikeIcon, LikeIcon } from "../components/Icons";
 import NoResults from "../components/NoResults";
 import VideoPlayer from "../components/VideoPlayer";
 import Button from "../styles/Button";
 import Wrapper from "../styles/WatchVideo";
+import { formatCreatedAt } from "utils/date";
+import AddComment from "../components/AddComment";
 
 function WatchVideo() {
-  const is404 = true;
+  const { videoId } = useParams();
+  const { data: video, isLoading } = useQuery(["WatchVideo", videoId], () =>
+    client.get(`/videos/${videoId}`).then((res) => res.data.video)
+  );
 
-  if (is404) {
+  if (isLoading) {
+    return <ChannelSkeleton />;
+  }
+
+  if (!isLoading && !video) {
     return (
       <NoResults
         title="Page not found"
@@ -19,28 +32,33 @@ function WatchVideo() {
     );
   }
 
+  console.log(video);
+
   return (
-    <Wrapper filledLike={true} filledDislike={false}>
+    <Wrapper
+      filledLike={video && video.isLiked}
+      filledDislike={video && video.isDisliked}
+    >
       <div className="video-container">
         <div className="video">
-          <VideoPlayer />
+          {!isLoading && <VideoPlayer video={video} />}
         </div>
 
         <div className="video-info">
-          <h3>Title</h3>
+          <h3>{video.title}</h3>
 
           <div className="video-info-stats">
             <p>
-              <span>Views views</span> <span>•</span>{" "}
-              <span>Premiered createdAt</span>
+              <span>{video.views} views</span> <span>•</span>{" "}
+              <span>Premiered {formatCreatedAt(video.createdAt)}</span>
             </p>
 
             <div className="likes-dislikes flex-row">
               <p className="flex-row like">
-                <LikeIcon /> <span>Likes Count</span>
+                <LikeIcon /> <span>{video.likesCount}</span>
               </p>
               <p className="flex-row dislike" style={{ marginLeft: "1rem" }}>
-                <DislikeIcon /> <span>Dislikes Count</span>
+                <DislikeIcon /> <span>{video.dislikesCount}</span>
               </p>
             </div>
           </div>
@@ -51,24 +69,29 @@ function WatchVideo() {
             <div className="channel-info flex-row">
               <img
                 className="avatar md"
-                src="https://dummyimage.com/100x100"
-                alt="channel avatar"
+                src={video.user.avatar}
+                alt={`${video.user.username} channel avatar`}
               />
               <div className="channel-info-meta">
-                <h4>Username</h4>
+                <h4>{video.user.username}</h4>
                 <span className="secondary small">
-                  SubscribersCount subscribers
+                  {video.subscribersCount} subscribers
                 </span>
               </div>
             </div>
 
-            <Button>Subscribe</Button>
+            {!video.isVideoMine && !video.isSubscribed && (
+              <Button>Subscribe</Button>
+            )}
+            {!video.isVideoMine && video.isSubscribed && (
+              <Button>Subscribed</Button>
+            )}
           </div>
 
-          <p>Description</p>
+          <p>{video.description}</p>
         </div>
 
-        <CommentList />
+        <AddComment video={video} />
       </div>
 
       <div className="related-videos">
