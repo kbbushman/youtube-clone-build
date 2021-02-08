@@ -1,4 +1,8 @@
+import { useAuth } from "context/auth-context";
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { useSnackbar } from "react-simple-snackbar";
+import { addVideo } from "utils/api-client";
 import Button from "../styles/Button";
 import Wrapper from "../styles/UploadVideoModal";
 import { CloseIcon } from "./Icons";
@@ -11,11 +15,34 @@ function UploadVideoModal({
   defaultTitle,
   closeModal,
 }) {
+  const user = useAuth();
+  const history = useHistory();
+  const [openSnackbar] = useSnackbar();
   const [tab, setTab] = React.useState("PREVIEW");
   const [title, setTitle] = React.useState(defaultTitle);
   const [description, setDescription] = React.useState("");
 
-  function handleTab() {}
+  async function handleTab() {
+    if (tab === "PREVIEW") {
+      setTab("FORM");
+    } else {
+      if (!title.trim() || !description.trim()) {
+        return openSnackbar("Please fill in all the fields");
+      }
+
+      const video = {
+        title,
+        description,
+        url,
+        thumbnail,
+      };
+
+      await addVideo(video);
+      closeModal();
+      openSnackbar("Video Published!");
+      history.push(`/channel/${user.id}`);
+    }
+  }
 
   return (
     <Wrapper>
@@ -45,10 +72,12 @@ function UploadVideoModal({
               type="text"
               placeholder="Enter your video title"
               value={title}
+              onChange={(event) => setTitle(event.target.value)}
             />
             <textarea
               placeholder="Tell viewers about your video"
               value={description}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </div>
         )}
