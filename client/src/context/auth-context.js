@@ -1,17 +1,25 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { client } from "utils/api-client";
 
 const AuthContext = React.createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = React.useState(null);
-
-  React.useEffect(() => {
+  const { data } = useQuery("AuthProvider", () =>
     client
       .get("/auth/me")
-      .then((res) => setUser(res.data.user))
-      .catch((err) => setUser(null));
-  }, []);
+      .then((res) => res.data.user)
+      .catch((err) => {})
+  );
+  const user = data || null;
+  // const [user, setUser] = React.useState(null);
+
+  // React.useEffect(() => {
+  //   client
+  //     .get("/auth/me")
+  //     .then((res) => setUser(res.data.user))
+  //     .catch((err) => setUser(null));
+  // }, []);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
