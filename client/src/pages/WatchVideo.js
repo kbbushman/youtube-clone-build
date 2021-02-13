@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import ChannelSkeleton from "../skeletons/WatchVideoSkeleton";
-import { client } from "utils/api-client";
+import { client, likeVideo } from "utils/api-client";
 import CommentList from "../components/AddComment";
 import { DislikeIcon, LikeIcon } from "../components/Icons";
 import NoResults from "../components/NoResults";
@@ -40,6 +40,10 @@ function WatchVideo() {
 
   console.log(video);
 
+  const handleLikeVideo = (videoId) => {
+    likeVideo(videoId);
+  };
+
   return (
     <Wrapper
       filledLike={video && video.isLiked}
@@ -61,7 +65,8 @@ function WatchVideo() {
 
             <div className="likes-dislikes flex-row">
               <p className="flex-row like">
-                <LikeIcon /> <span>{video.likesCount}</span>
+                <LikeIcon onClick={() => handleLikeVideo(video.id)} />{" "}
+                <span>{video.likesCount}</span>
               </p>
               <p className="flex-row dislike" style={{ marginLeft: "1rem" }}>
                 <DislikeIcon /> <span>{video.dislikesCount}</span>
