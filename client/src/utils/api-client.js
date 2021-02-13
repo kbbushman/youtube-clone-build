@@ -48,7 +48,10 @@ export async function likeVideo(videoId) {
   await queryCache.invalidateQueries(["WatchVideo", videoId]);
 }
 
-export async function dislikeVideo() {}
+export async function dislikeVideo(videoId) {
+  await client.get(`/videos/${videoId}/dislike`);
+  await queryCache.invalidateQueries(["WatchVideo", videoId]);
+}
 
 export async function deleteVideo() {}
 
