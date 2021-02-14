@@ -3,7 +3,12 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import ChannelSkeleton from "../skeletons/WatchVideoSkeleton";
-import { client, dislikeVideo, likeVideo } from "utils/api-client";
+import {
+  client,
+  dislikeVideo,
+  likeVideo,
+  toggleSubscribeUser,
+} from "utils/api-client";
 import CommentList from "../components/AddComment";
 import { DislikeIcon, LikeIcon } from "../components/Icons";
 import NoResults from "../components/NoResults";
@@ -38,14 +43,16 @@ function WatchVideo() {
     );
   }
 
-  console.log(video);
-
   const handleLikeVideo = (videoId) => {
     likeVideo(videoId);
   };
 
   const handleDislikeVideo = (videoId) => {
     dislikeVideo(videoId);
+  };
+
+  const handleToggleSubscribe = (channelId) => {
+    toggleSubscribeUser(channelId);
   };
 
   return (
@@ -97,10 +104,14 @@ function WatchVideo() {
             </div>
 
             {!video.isVideoMine && !video.isSubscribed && (
-              <Button>Subscribe</Button>
+              <Button onClick={() => handleToggleSubscribe(video.user.id)}>
+                Subscribe
+              </Button>
             )}
             {!video.isVideoMine && video.isSubscribed && (
-              <Button>Subscribed</Button>
+              <Button grey onClick={() => handleToggleSubscribe(video.user.id)}>
+                Subscribed
+              </Button>
             )}
           </div>
 
