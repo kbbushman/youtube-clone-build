@@ -18,9 +18,11 @@ import Wrapper from "../styles/WatchVideo";
 import { formatCreatedAt } from "utils/date";
 import AddComment from "../components/AddComment";
 import VideoCard from "components/VideoCard";
+import useAuthAction from "hooks/use-auth-action";
 
 function WatchVideo() {
   const { videoId } = useParams();
+  const handleAuthAction = useAuthAction();
   const { data: video, isLoading: isLoadingVideo } = useQuery(
     ["WatchVideo", videoId],
     () => client.get(`/videos/${videoId}`).then((res) => res.data.video)
@@ -44,15 +46,18 @@ function WatchVideo() {
   }
 
   const handleLikeVideo = (videoId) => {
-    likeVideo(videoId);
+    // likeVideo(videoId);
+    handleAuthAction(likeVideo, videoId);
   };
 
   const handleDislikeVideo = (videoId) => {
-    dislikeVideo(videoId);
+    // dislikeVideo(videoId);
+    handleAuthAction(dislikeVideo, videoId);
   };
 
   const handleToggleSubscribe = (channelId) => {
-    toggleSubscribeUser(channelId);
+    // toggleSubscribeUser(channelId);
+    handleAuthAction(toggleSubscribeUser, channelId);
   };
 
   return (
