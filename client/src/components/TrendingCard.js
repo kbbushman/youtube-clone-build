@@ -1,27 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { formatCreatedAt } from "utils/date";
 import Wrapper from "../styles/TrendingCard";
 
-function TrendingCard() {
+function TrendingCard({ video }) {
   return (
     <Wrapper>
-      <span>
+      <Link to={`/watch/${video.id}`}>
         <img
           className="thumb"
-          src="https://dummyimage.com/1280x720"
-          alt="video title"
+          src={video.thumbnail}
+          alt={video.title}
         />
-      </span>
+      </Link>
       <div className="video-info-container">
-        <span>
-          <h3>Title</h3>
-        </span>
+        <Link to={`/watch/${video.id}`}>
+          <h3>{video.title}</h3>
+        </Link>
         <p className="secondary">
-          <span>Username</span>
+          <span>{video.user.username}</span>
           <span>•</span>
-          <span>Views views</span>
-          <span>•</span> <span>Created At</span>
+          <span>{video.views} views</span>
+          <span>•</span> <span>{formatCreatedAt(video.createdAt)}</span>
         </p>
-        <p className="secondary">Description</p>
+        <p className="secondary">{video.description}</p>
       </div>
     </Wrapper>
   );
