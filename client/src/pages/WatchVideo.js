@@ -9,7 +9,6 @@ import {
   likeVideo,
   toggleSubscribeUser,
 } from "utils/api-client";
-import CommentList from "../components/AddComment";
 import { DislikeIcon, LikeIcon } from "../components/Icons";
 import NoResults from "../components/NoResults";
 import VideoPlayer from "../components/VideoPlayer";
