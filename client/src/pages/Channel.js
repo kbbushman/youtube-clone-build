@@ -1,5 +1,11 @@
 // @ts-nocheck
+import ErrorMessage from "components/ErrorMessage";
+import { useAuth } from "context/auth-context";
 import React from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import ChannelSkeleton from "skeletons/WatchVideoSkeleton";
+import { client } from "utils/api-client";
 import { VidIcon } from "../components/Icons";
 import SignUpCard from "../components/SignUpCard";
 import Wrapper from "../styles/Channel";
@@ -10,10 +16,18 @@ const activeTabStyle = {
 };
 
 function Channel() {
+  const user = useAuth();
+  const { channelId } = useParams();
   const [tab, setTab] = React.useState("VIDEOS");
-  const isAuth = false;
 
-  if (!isAuth) {
+  const loggedInUser = user ? user.id : undefined;
+  const userId = channelId || loggedInUser;
+
+  const { data: channel, isLoading, isError, error } = useQuery(['Channel', userId], () => client.get(`/users/${userId}`).then((res) => res.data.user), {
+    enabled: userId,
+  });
+
+  if (!user) {
     return (
       <SignUpCard
         icon={<VidIcon />}
@@ -22,6 +36,9 @@ function Channel() {
       />
     );
   }
+
+  if (isLoading) return <ChannelSkeleton />;
+  if (isError) return <ErrorMessage error={error} />;
 
   return (
     <Wrapper editProfile={false}>
