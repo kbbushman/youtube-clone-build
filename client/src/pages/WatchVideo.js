@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ChannelSkeleton from "../skeletons/WatchVideoSkeleton";
 import {
   client,
@@ -100,7 +100,9 @@ function WatchVideo() {
                 alt={`${video.user.username} channel avatar`}
               />
               <div className="channel-info-meta">
-                <h4>{video.user.username}</h4>
+                <Link to={`/channel/${video.user.id}`}>
+                  <h4>{video.user.username}</h4>
+                </Link>
                 <span className="secondary small">
                   {video.subscribersCount} subscribers
                 </span>
