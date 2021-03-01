@@ -6,7 +6,13 @@ function ChannelTabVideo({ videos }) {
   if (!videos.length) {
     return <p>This channel has not posted any videos yet</p>
   }
-  return <Wrapper>{videos.length && videos.map((video) => <VideoCard key={video.id} video={video} noUsername hideAvatar />)}</Wrapper>;
+  return (
+    <Wrapper>
+      <div className="videos">
+        {videos.map((video) => <VideoCard key={video.id} video={video} noUsername hideAvatar />)}
+      </div>
+    </Wrapper>
+  );
 }
 
 export default ChannelTabVideo;
