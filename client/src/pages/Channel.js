@@ -70,17 +70,17 @@ function Channel() {
               <span className="secondary">{channel.subscribersCount} subscribers</span>
             </div>
           </div>
+          {channel.isMe && <EditProfile profile={channel} />}
+
+          {!channel.isMe && !channel.isSubscribed && (
+            <Button onClikc={handleToggleSubscribe}>Subscribe</Button>
+          )}
+
+          {!channel.isMe && !channel.isSubscribed && (
+            <Button grey onClikc={handleToggleSubscribe}>Subscribed</Button>
+          )}
         </div>
 
-        {channel.isMe && <EditProfile profile={channel} />}
-
-        {!channel.isMe && !channel.isSubscribed && (
-          <Button onClikc={handleToggleSubscribe}>Subscribe</Button>
-        )}
-
-        {!channel.isMe && !channel.isSubscribed && (
-          <Button grey onClikc={handleToggleSubscribe}>Subscribed</Button>
-        )}
 
         <div className="tabs">
           <ul className="secondary">
