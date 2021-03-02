@@ -209,7 +209,7 @@ async function searchUser(req, res, next) {
       });
     }
 
-    user.subcribersCount = subscribersCount;
+    user.subscribersCount = subscribersCount;
     user.videosCount = videosCount;
     user.isSubscribed = Boolean(isSubscribed);
     user.isMe = isMe;
@@ -260,7 +260,7 @@ async function getRecommendedChannels(req, res) {
       },
     });
 
-    channel.subcribersCount = subscribersCount;
+    channel.subscribersCount = subscribersCount;
     channel.videosCount = videosCount;
     channel.isSubscribed = Boolean(isSubscribed);
   }
@@ -350,7 +350,7 @@ async function getProfile(req, res, next) {
     },
   });
 
-  user.subcribersCount = subscribersCount;
+  user.subscribersCount = subscribersCount;
   user.isSubscribed = Boolean(isSubscribed);
   user.isMe = isMe;
   user.channels = channels;
