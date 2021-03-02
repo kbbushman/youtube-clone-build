@@ -73,11 +73,11 @@ function Channel() {
           {channel.isMe && <EditProfile profile={channel} />}
 
           {!channel.isMe && !channel.isSubscribed && (
-            <Button onClikc={handleToggleSubscribe}>Subscribe</Button>
+            <Button onClick={handleToggleSubscribe}>Subscribe</Button>
           )}
 
-          {!channel.isMe && !channel.isSubscribed && (
-            <Button grey onClikc={handleToggleSubscribe}>Subscribed</Button>
+          {!channel.isMe && channel.isSubscribed && (
+            <Button grey onClick={handleToggleSubscribe}>Subscribed</Button>
           )}
         </div>
 
