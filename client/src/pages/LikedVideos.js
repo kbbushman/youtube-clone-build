@@ -38,9 +38,7 @@ function LikedVideos() {
         </p>
       )}
       {isSuccess && videos.map((video) => (
-        <Link key={video.id} to={`/watch/${video.id}`}>
-          <TrendingCard video={video} />
-        </Link>
+          <TrendingCard key={video.id}  video={video} />
       ))}
     </Wrapper>
   );
